@@ -20,17 +20,26 @@ export function sanitizeUserId(user: string | null): string {
 export function parseQueryOptions(url: URL): BadgeOptions {
   const searchParams = url.searchParams;
 
-  const theme = searchParams.get('theme') as BadgeTheme || 'github';
-  const style = searchParams.get('style') as BadgeStyle || 'rounded';
+  const theme = (searchParams.get('theme') as BadgeTheme) || 'github';
+  const style = (searchParams.get('style') as BadgeStyle) || 'rounded';
   const color = searchParams.get('color') || undefined;
   const label = searchParams.get('label') || undefined;
-  const showTotal = searchParams.get('showTotal') !== 'false';
-  const showPercent = searchParams.get('showPercent') !== 'false';
   const logo = searchParams.get('logo') || undefined;
   const card = searchParams.get('card') === 'true';
 
   // Validate theme
-  const validThemes: BadgeTheme[] = ['light', 'dark', 'github'];
+  const validThemes: BadgeTheme[] = [
+    'light',
+    'dark',
+    'github',
+    'ocean',
+    'sunset',
+    'emerald',
+    'rose',
+    'purple',
+    'nord',
+    'dracula',
+  ];
   const sanitizedTheme = validThemes.includes(theme) ? theme : 'github';
 
   // Validate style
@@ -42,8 +51,6 @@ export function parseQueryOptions(url: URL): BadgeOptions {
     style: sanitizedStyle,
     color,
     label,
-    showTotal,
-    showPercent,
     logo,
     card,
   };
@@ -57,17 +64,16 @@ export function isValidHexColor(color: string): boolean {
 }
 
 /**
- * Normalizes color values (adds '#' if missing for hex colors, or returns standard names).
+ * Normalizes color values (adds '#' if missing for hex colors).
  */
 export function normalizeColor(color: string | undefined, defaultColor: string): string {
   if (!color) return defaultColor;
-  
+
   const trimmed = color.trim();
   if (isValidHexColor(trimmed)) {
     return trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
   }
-  
-  // Safe list of CSS color names or common color words
+
   const cssColorRegex = /^[a-z]+$/i;
   if (cssColorRegex.test(trimmed)) {
     return trimmed;

@@ -1,8 +1,136 @@
-import { CsesProfile, BadgeOptions } from '../types';
+import { CsesProfile, BadgeOptions, BadgeTheme } from '../types';
 import { normalizeColor } from './utils';
 
-// Standard base64 CSES Logo path (or simple SVG representation)
-const CSES_LOGO_PATH = 'M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z'; // simple grid representation
+const CSES_LOGO_PATH = 'M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z';
+
+/**
+ * Complete theme definitions.
+ */
+const THEMES: Record<
+  BadgeTheme,
+  {
+    bg: string;
+    cardBg1: string;
+    cardBg2: string;
+    text: string;
+    textMuted: string;
+    accent: string;
+    accentMuted: string;
+    border: string;
+    badgeLabelColor: string;
+  }
+> = {
+  github: {
+    bg: '#0d1117',
+    cardBg1: '#161b22',
+    cardBg2: '#0d1117',
+    text: '#c9d1d9',
+    textMuted: '#8b949e',
+    accent: '#2ea44f',
+    accentMuted: 'rgba(46, 164, 79, 0.12)',
+    border: '#30363d',
+    badgeLabelColor: '#9ca3af',
+  },
+  dark: {
+    bg: '#09090b',
+    cardBg1: '#18181b',
+    cardBg2: '#09090b',
+    text: '#f4f4f5',
+    textMuted: '#a1a1aa',
+    accent: '#10b981',
+    accentMuted: 'rgba(16, 185, 129, 0.12)',
+    border: '#27272a',
+    badgeLabelColor: '#a1a1aa',
+  },
+  light: {
+    bg: '#f8fafc',
+    cardBg1: '#ffffff',
+    cardBg2: '#f1f5f9',
+    text: '#0f172a',
+    textMuted: '#64748b',
+    accent: '#2563eb',
+    accentMuted: 'rgba(37, 99, 235, 0.08)',
+    border: '#e2e8f0',
+    badgeLabelColor: '#64748b',
+  },
+  ocean: {
+    bg: '#0a1628',
+    cardBg1: '#0f2035',
+    cardBg2: '#0a1628',
+    text: '#e0f2fe',
+    textMuted: '#7dd3fc',
+    accent: '#0ea5e9',
+    accentMuted: 'rgba(14, 165, 233, 0.12)',
+    border: '#164e63',
+    badgeLabelColor: '#7dd3fc',
+  },
+  sunset: {
+    bg: '#1c1007',
+    cardBg1: '#27180e',
+    cardBg2: '#1c1007',
+    text: '#fef3c7',
+    textMuted: '#fbbf24',
+    accent: '#f97316',
+    accentMuted: 'rgba(249, 115, 22, 0.12)',
+    border: '#78350f',
+    badgeLabelColor: '#fbbf24',
+  },
+  emerald: {
+    bg: '#022c22',
+    cardBg1: '#064e3b',
+    cardBg2: '#022c22',
+    text: '#d1fae5',
+    textMuted: '#6ee7b7',
+    accent: '#34d399',
+    accentMuted: 'rgba(52, 211, 153, 0.12)',
+    border: '#065f46',
+    badgeLabelColor: '#6ee7b7',
+  },
+  rose: {
+    bg: '#1a0a0e',
+    cardBg1: '#2a1015',
+    cardBg2: '#1a0a0e',
+    text: '#ffe4e6',
+    textMuted: '#fda4af',
+    accent: '#f43f5e',
+    accentMuted: 'rgba(244, 63, 94, 0.12)',
+    border: '#4c0519',
+    badgeLabelColor: '#fda4af',
+  },
+  purple: {
+    bg: '#13071e',
+    cardBg1: '#1e1033',
+    cardBg2: '#13071e',
+    text: '#f3e8ff',
+    textMuted: '#c084fc',
+    accent: '#a855f7',
+    accentMuted: 'rgba(168, 85, 247, 0.12)',
+    border: '#3b0764',
+    badgeLabelColor: '#c084fc',
+  },
+  nord: {
+    bg: '#2e3440',
+    cardBg1: '#3b4252',
+    cardBg2: '#2e3440',
+    text: '#eceff4',
+    textMuted: '#d8dee9',
+    accent: '#88c0d0',
+    accentMuted: 'rgba(136, 192, 208, 0.12)',
+    border: '#4c566a',
+    badgeLabelColor: '#d8dee9',
+  },
+  dracula: {
+    bg: '#282a36',
+    cardBg1: '#343746',
+    cardBg2: '#282a36',
+    text: '#f8f8f2',
+    textMuted: '#6272a4',
+    accent: '#bd93f9',
+    accentMuted: 'rgba(189, 147, 249, 0.12)',
+    border: '#44475a',
+    badgeLabelColor: '#6272a4',
+  },
+};
 
 /**
  * Main SVG Generator dispatcher.
@@ -15,315 +143,137 @@ export function generateSvg(profile: CsesProfile, options: BadgeOptions): string
 }
 
 /**
- * Generates a clean, simple, highly configurable SVG badge.
+ * Badge: shows "CSES | 372 submissions"
  */
 export function generateBadgeSvg(profile: CsesProfile, options: BadgeOptions): string {
-  const {
-    theme = 'github',
-    style = 'rounded',
-    color,
-    label = 'CSES',
-    showTotal = true,
-    showPercent = true,
-    logo,
-  } = options;
+  const { theme = 'github', style = 'rounded', color, label = 'CSES', logo } = options;
 
-  // Curated color themes
-  const themes = {
-    github: {
-      bg: '#0d1117',
-      text: '#c9d1d9',
-      accent: '#2ea44f',
-      border: '#30363d',
-    },
-    dark: {
-      bg: '#18181b',
-      text: '#f4f4f5',
-      accent: '#10b981',
-      border: '#27272a',
-    },
-    light: {
-      bg: '#ffffff',
-      text: '#09090b',
-      accent: '#2563eb',
-      border: '#e4e4e7',
-    },
-  };
+  const t = THEMES[theme] || THEMES.github;
+  const accentColor = normalizeColor(color, t.accent);
 
-  const selectedTheme = themes[theme];
-  const accentColor = normalizeColor(color, selectedTheme.accent);
-
-  // Set style properties
   const rx = style === 'rounded' ? '6' : style === 'modern' ? '12' : '0';
   const hasShadow = style === 'modern';
 
-  // Calculate values
-  const solvedCount = profile.solved;
-  const totalCount = profile.total;
-  const percent = Math.min(100, Math.round((solvedCount / totalCount) * 100));
+  const valueText = `${profile.submissions} submissions`;
 
-  let valueText = `${solvedCount}`;
-  if (showTotal) valueText += `/${totalCount}`;
-  if (showPercent) valueText += ` (${percent}%)`;
-
-  // Dynamic layout measurements
   const paddingX = 14;
   const logoWidth = logo !== 'false' ? 18 : 0;
   const logoGap = logo !== 'false' ? 8 : 0;
-
-  // Font metrics approximation
   const labelLength = label.length * 7;
   const valueLength = valueText.length * 7.5;
-
   const leftWidth = labelLength + paddingX * 2 + logoWidth + logoGap;
   const rightWidth = valueLength + paddingX * 2;
   const totalWidth = leftWidth + rightWidth;
   const height = 32;
 
-  return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" viewBox="0 0 ${totalWidth} ${height}" fill="none">
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap');
-        .text {
-          font-family: 'Inter', system-ui, -apple-system, sans-serif;
-          font-size: 13px;
-          font-weight: 700;
-        }
-        .label-text {
-          fill: ${theme === 'light' ? '#4b5563' : '#9ca3af'};
-        }
-        .value-text {
-          fill: #ffffff;
-        }
-        .badge-container {
-          transition: transform 0.2s ease-in-out;
-        }
-        .badge-container:hover {
-          transform: scale(1.02);
-        }
-      </style>
-      
-      ${hasShadow ? `
-      <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/>
-      </filter>
-      ` : ''}
-
-      <g class="badge-container" ${hasShadow ? 'filter="url(#shadow)"' : ''}>
-        <!-- Left Side Background -->
-        <path d="M ${rx} 0 L ${leftWidth} 0 L ${leftWidth} ${height} L ${rx} ${height} A ${rx} ${rx} 0 0 1 0 ${height - Number(rx)} L 0 ${rx} A ${rx} ${rx} 0 0 1 ${rx} 0 Z" fill="${selectedTheme.bg}" stroke="${selectedTheme.border}" stroke-width="1"/>
-        
-        <!-- Right Side Background -->
-        <path d="M ${leftWidth} 0 L ${totalWidth - Number(rx)} 0 A ${rx} ${rx} 0 0 1 ${totalWidth} ${rx} L ${totalWidth} ${height - Number(rx)} A ${rx} ${rx} 0 0 1 ${totalWidth - Number(rx)} ${height} L ${leftWidth} ${height} Z" fill="${accentColor}"/>
-        
-        <!-- Logo -->
-        ${logo !== 'false' ? `
-        <svg x="${paddingX}" y="${(height - 16) / 2}" width="16" height="16" viewBox="0 0 24 24" fill="${theme === 'light' ? '#374151' : '#ffffff'}">
-          <path d="${CSES_LOGO_PATH}"/>
-        </svg>
-        ` : ''}
-        
-        <!-- Text -->
-        <text x="${paddingX + logoWidth + logoGap}" y="${height / 2 + 4}" class="text label-text">${label}</text>
-        <text x="${leftWidth + paddingX}" y="${height / 2 + 4}" class="text value-text">${valueText}</text>
-      </g>
-    </svg>
-  `.trim();
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" viewBox="0 0 ${totalWidth} ${height}" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&amp;display=swap');
+    .text { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; }
+    .label-text { fill: ${t.badgeLabelColor}; }
+    .value-text { fill: #ffffff; }
+  </style>
+  ${hasShadow ? `<filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.15"/></filter>` : ''}
+  <g ${hasShadow ? 'filter="url(#shadow)"' : ''}>
+    <path d="M ${rx} 0 L ${leftWidth} 0 L ${leftWidth} ${height} L ${rx} ${height} A ${rx} ${rx} 0 0 1 0 ${height - Number(rx)} L 0 ${rx} A ${rx} ${rx} 0 0 1 ${rx} 0 Z" fill="${t.bg}" stroke="${t.border}" stroke-width="1"/>
+    <path d="M ${leftWidth} 0 L ${totalWidth - Number(rx)} 0 A ${rx} ${rx} 0 0 1 ${totalWidth} ${rx} L ${totalWidth} ${height - Number(rx)} A ${rx} ${rx} 0 0 1 ${totalWidth - Number(rx)} ${height} L ${leftWidth} ${height} Z" fill="${accentColor}"/>
+    ${logo !== 'false' ? `<svg x="${paddingX}" y="${(height - 16) / 2}" width="16" height="16" viewBox="0 0 24 24" fill="${theme === 'light' ? '#374151' : '#ffffff'}"><path d="${CSES_LOGO_PATH}"/></svg>` : ''}
+    <text x="${paddingX + logoWidth + logoGap}" y="${height / 2 + 4}" class="text label-text">${label}</text>
+    <text x="${leftWidth + paddingX}" y="${height / 2 + 4}" class="text value-text">${valueText}</text>
+  </g>
+</svg>`;
 }
 
 /**
- * Generates an exquisite, statistics-rich CSES profile card.
+ * Card: shows all publicly visible CSES stats.
+ * Title: "CSES", shows submissions, first/last dates, languages.
  */
 export function generateCardSvg(profile: CsesProfile, options: BadgeOptions): string {
-  const {
-    theme = 'github',
-    style = 'rounded',
-    color,
-    showPercent = true,
-  } = options;
+  const { theme = 'github', style = 'rounded', color } = options;
 
-  // Curated color themes for cards
-  const themes = {
-    github: {
-      bg: '#0d1117',
-      cardBg: 'linear-gradient(135deg, #161b22 0%, #0d1117 100%)',
-      text: '#c9d1d9',
-      textMuted: '#8b949e',
-      accent: '#58a6ff',
-      accentMuted: 'rgba(88, 166, 255, 0.1)',
-      border: '#30363d',
-    },
-    dark: {
-      bg: '#09090b',
-      cardBg: 'linear-gradient(135deg, #18181b 0%, #09090b 100%)',
-      text: '#f4f4f5',
-      textMuted: '#a1a1aa',
-      accent: '#10b981',
-      accentMuted: 'rgba(16, 185, 129, 0.1)',
-      border: '#27272a',
-    },
-    light: {
-      bg: '#f4f4f5',
-      cardBg: 'linear-gradient(135deg, #ffffff 0%, #f4f4f5 100%)',
-      text: '#09090b',
-      textMuted: '#71717a',
-      accent: '#2563eb',
-      accentMuted: 'rgba(37, 99, 235, 0.05)',
-      border: '#e4e4e7',
-    },
-  };
+  const t = THEMES[theme] || THEMES.github;
+  const accentColor = normalizeColor(color, t.accent);
 
-  const selectedTheme = themes[theme];
-  const accentColor = normalizeColor(color, selectedTheme.accent);
-
-  // Card dimensions
-  const width = 450;
-  const height = 340;
+  const width = 460;
   const rx = style === 'rounded' ? '12' : style === 'modern' ? '18' : '0';
 
-  const solvedCount = profile.solved;
-  const totalCount = profile.total;
   const submissions = profile.submissions || 0;
-  const percent = Math.min(100, Math.round((solvedCount / totalCount) * 100));
+  const firstSub = profile.firstSubmission || 'N/A';
+  const lastSub = profile.lastSubmission || 'N/A';
+  const languages = profile.languages || [];
 
-  // Progress bar logic
-  const progressWidth = 410;
-  const activeProgressWidth = (percent / 100) * progressWidth;
+  // Dynamic height
+  const langRowHeight = 22;
+  const langSectionHeight = languages.length > 0 ? 40 + languages.length * langRowHeight : 0;
+  const baseHeight = 175;
+  const height = baseHeight + langSectionHeight;
 
-  // Fallback category stats if sections not scraped
-  const defaultSections = [
-    { name: 'Introductory Problems', solved: Math.round(solvedCount * 0.1), total: 36 },
-    { name: 'Sorting and Searching', solved: Math.round(solvedCount * 0.15), total: 35 },
-    { name: 'Dynamic Programming', solved: Math.round(solvedCount * 0.12), total: 19 },
-    { name: 'Graph Algorithms', solved: Math.round(solvedCount * 0.2), total: 36 },
-  ];
-  const sectionsToRender = profile.sections && profile.sections.length > 0 ? profile.sections : defaultSections;
+  // Language rows
+  const languagesSvg =
+    languages.length > 0
+      ? `
+    <line x1="24" y1="150" x2="436" y2="150" stroke="${t.border}" stroke-width="1" stroke-dasharray="4,4" />
+    <text x="24" y="175" class="section-title">Languages</text>
+    ${languages
+      .map((lang, idx) => {
+        const rowY = 190 + idx * langRowHeight;
+        return `<g>
+      <text x="24" y="${rowY}" class="sec-label">${lang.name}</text>
+      <text x="320" y="${rowY}" class="sec-value" text-anchor="end">${lang.count} submissions</text>
+      <text x="436" y="${rowY}" class="sec-value" text-anchor="end">${lang.share}</text>
+    </g>`;
+      })
+      .join('')}
+  `
+      : '';
 
-  return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none">
-      <defs>
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap');
-          .card {
-            font-family: 'Outfit', system-ui, -apple-system, sans-serif;
-          }
-          .title {
-            font-size: 18px;
-            font-weight: 700;
-            fill: ${selectedTheme.text};
-          }
-          .subtitle {
-            font-size: 12px;
-            fill: ${selectedTheme.textMuted};
-          }
-          .stat-label {
-            font-size: 14px;
-            font-weight: 600;
-            fill: ${selectedTheme.text};
-          }
-          .stat-value {
-            font-size: 14px;
-            font-weight: 700;
-            fill: ${accentColor};
-          }
-          .sec-label {
-            font-size: 12px;
-            fill: ${selectedTheme.textMuted};
-          }
-          .sec-value {
-            font-size: 12px;
-            font-weight: 600;
-            fill: ${selectedTheme.text};
-          }
-          .percentage-label {
-            font-size: 16px;
-            font-weight: 700;
-            fill: ${accentColor};
-          }
-          .card-bg {
-            stroke: ${selectedTheme.border};
-            stroke-width: 1.5;
-            transition: all 0.3s ease;
-          }
-          .hover-group {
-            transition: transform 0.3s ease;
-            cursor: pointer;
-          }
-          .hover-group:hover {
-            transform: translateY(-3px);
-          }
-        </style>
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap');
+      .card { font-family: 'Outfit', system-ui, -apple-system, sans-serif; }
+      .title { font-size: 20px; font-weight: 700; fill: ${t.text}; }
+      .subtitle { font-size: 12px; fill: ${t.textMuted}; }
+      .stat-label { font-size: 14px; font-weight: 600; fill: ${t.text}; }
+      .stat-value { font-size: 14px; font-weight: 700; fill: ${accentColor}; }
+      .sec-label { font-size: 12px; fill: ${t.textMuted}; }
+      .sec-value { font-size: 12px; font-weight: 600; fill: ${t.text}; }
+      .section-title { font-size: 13px; font-weight: 700; fill: ${t.textMuted}; text-transform: uppercase; letter-spacing: 1px; }
+      .card-bg { stroke: ${t.border}; stroke-width: 1.5; }
+    </style>
 
-        <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="${theme === 'light' ? '#ffffff' : '#1e1e24'}" />
-          <stop offset="100%" stop-color="${selectedTheme.bg}" />
-        </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${t.cardBg1}" />
+      <stop offset="100%" stop-color="${t.cardBg2}" />
+    </linearGradient>
 
-        <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="${accentColor}" />
-          <stop offset="100%" stop-color="${accentColor}cc" />
-        </linearGradient>
+    ${style === 'modern' ? `<filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.3"/></filter>` : ''}
+  </defs>
 
-        ${style === 'modern' ? `
-        <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.3"/>
-        </filter>
-        ` : ''}
-      </defs>
+  <g class="card" ${style === 'modern' ? 'filter="url(#cardShadow)"' : ''}>
+    <rect x="1" y="1" width="${width - 2}" height="${height - 2}" rx="${rx}" fill="url(#cardGrad)" class="card-bg" />
 
-      <g class="card hover-group" ${style === 'modern' ? 'filter="url(#cardShadow)"' : ''}>
-        <!-- Card Background -->
-        <rect x="1" y="1" width="${width - 2}" height="${height - 2}" rx="${rx}" fill="url(#cardGrad)" class="card-bg" />
+    <!-- Header -->
+    <g transform="translate(24, 28)">
+      <rect width="36" height="36" rx="8" fill="${t.accentMuted}" />
+      <svg x="8" y="8" width="20" height="20" viewBox="0 0 24 24" fill="${accentColor}">
+        <path d="${CSES_LOGO_PATH}"/>
+      </svg>
+      <text x="48" y="18" class="title">CSES</text>
+      <text x="48" y="34" class="subtitle">@${profile.username}</text>
+    </g>
 
-        <!-- Header -->
-        <g transform="translate(24, 30)">
-          <!-- CSES Styled Trophy/Icon -->
-          <rect width="36" height="36" rx="8" fill="${selectedTheme.accentMuted}" />
-          <path d="M 12 10 L 24 10 L 24 14 A 6 6 0 0 1 12 14 Z M 18 20 L 18 24 M 14 26 L 22 26" stroke="${accentColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-          
-          <text x="48" y="20" class="title">CSES Profile Card</text>
-          <text x="48" y="34" class="subtitle">@${profile.username} (${profile.submissions ? 'Active user' : 'Profile'})</text>
-        </g>
+    <!-- Stats (only publicly visible data) -->
+    <g transform="translate(24, 90)">
+      <text x="0" y="18" class="stat-label">📊 Total Submissions</text>
+      <text x="418" y="18" class="stat-value" text-anchor="end">${submissions.toLocaleString()}</text>
 
-        <!-- Main Solved Stats Row -->
-        <g transform="translate(24, 96)">
-          <text x="0" y="20" class="stat-label">🏆 Solved Problems</text>
-          <text x="402" y="20" class="stat-value" text-anchor="end">${solvedCount} / ${totalCount}</text>
-          
-          <text x="0" y="48" class="stat-label">⭐ Total Submissions</text>
-          <text x="402" y="48" class="stat-value" text-anchor="end">${submissions}</text>
-        </g>
+      <text x="0" y="46" class="stat-label">📅 First Submission</text>
+      <text x="418" y="46" class="stat-value" text-anchor="end">${firstSub}</text>
+    </g>
 
-        <!-- Separator -->
-        <line x1="24" y1="170" x2="426" y2="170" stroke="${selectedTheme.border}" stroke-width="1" stroke-dasharray="4,4" />
-
-        <!-- Categories Breakdown -->
-        <g transform="translate(24, 185)">
-          ${sectionsToRender.map((sec, idx) => {
-            const rowY = idx * 24;
-            return `
-              <g transform="translate(0, ${rowY})">
-                <text x="0" y="14" class="sec-label">${sec.name}</text>
-                <text x="402" y="14" class="sec-value" text-anchor="end">${sec.solved} / ${sec.total}</text>
-              </g>
-            `;
-          }).join('')}
-        </g>
-
-        <!-- Progress Section -->
-        <g transform="translate(20, 290)">
-          <!-- Background track -->
-          <rect x="0" y="10" width="${progressWidth}" height="10" rx="5" fill="${theme === 'light' ? '#e4e4e7' : '#27272a'}" />
-          <!-- Animated Progress track -->
-          <rect x="0" y="10" width="${activeProgressWidth}" height="10" rx="5" fill="url(#progressGrad)">
-            <animate attributeName="width" from="0" to="${activeProgressWidth}" dur="1.2s" cubic-bezier="0.4, 0, 0.2, 1" fill="freeze" />
-          </rect>
-          <!-- Percentage -->
-          ${showPercent ? `
-          <text x="${progressWidth}" y="0" class="percentage-label" text-anchor="end">${percent}% Completed</text>
-          ` : ''}
-        </g>
-      </g>
-    </svg>
-  `.trim();
+    <!-- Languages -->
+    ${languagesSvg}
+  </g>
+</svg>`;
 }

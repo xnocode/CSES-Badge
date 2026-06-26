@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   if (!url.searchParams.has('card')) {
     url.searchParams.set('card', 'true');
   }
-  
+
   // Re-run the badge GET request with the updated search parameter
   const modifiedRequest = new NextRequest(url.toString(), {
     headers: request.headers,

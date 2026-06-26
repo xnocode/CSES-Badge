@@ -1,20 +1,30 @@
 export interface CsesProfile {
   username: string;
-  solved: number;
-  total: number;
-  submissions?: number;
-  userTitle?: string;
-  sections?: CsesSection[];
+  submissions: number;
+  firstSubmission: string;
+  lastSubmission: string;
+  languages: CsesLanguage[];
   error?: string;
 }
 
-export interface CsesSection {
+export interface CsesLanguage {
   name: string;
-  solved: number;
-  total: number;
+  count: number;
+  share: string;
 }
 
-export type BadgeTheme = 'light' | 'dark' | 'github';
+export type BadgeTheme =
+  | 'light'
+  | 'dark'
+  | 'github'
+  | 'ocean'
+  | 'sunset'
+  | 'emerald'
+  | 'rose'
+  | 'purple'
+  | 'nord'
+  | 'dracula';
+
 export type BadgeStyle = 'flat' | 'rounded' | 'modern';
 
 export interface BadgeOptions {
@@ -22,8 +32,6 @@ export interface BadgeOptions {
   style?: BadgeStyle;
   color?: string;
   label?: string;
-  showTotal?: boolean;
-  showPercent?: boolean;
-  logo?: string; // name or base64 or boolean
-  card?: boolean; // to toggle the full stats card view
+  logo?: string;
+  card?: boolean;
 }

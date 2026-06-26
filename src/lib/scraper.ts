@@ -1,8 +1,11 @@
 import * as cheerio from 'cheerio';
-import { CsesProfile } from '../types';
+import { CsesProfile, CsesLanguage } from '../types';
 
 export class ScrapeError extends Error {
-  constructor(message: string, public statusCode: number = 500) {
+  constructor(
+    message: string,
+    public statusCode: number = 500
+  ) {
     super(message);
     this.name = 'ScrapeError';
   }
@@ -10,10 +13,9 @@ export class ScrapeError extends Error {
 
 /**
  * Fetches and scrapes a CSES user profile page.
- * @param userId CSES numeric user ID
+ * Only extracts publicly visible data (no login required).
  */
 export async function scrapeCsesProfile(userId: string): Promise<CsesProfile> {
-  // Validate that userId is a numeric string
   if (!/^\d+$/.test(userId)) {
     throw new ScrapeError('Invalid user ID. CSES user IDs must be numeric. (e.g. user=3)', 400);
   }
@@ -23,7 +25,8 @@ export async function scrapeCsesProfile(userId: string): Promise<CsesProfile> {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       },
     });
 
@@ -47,11 +50,11 @@ export async function scrapeCsesProfile(userId: string): Promise<CsesProfile> {
 
 /**
  * Parses the CSES profile HTML page using Cheerio.
+ * Public profiles show: submission count, first/last submission, and language breakdown.
  */
 export function parseCsesHtml(html: string, userId: string): CsesProfile {
   const $ = cheerio.load(html);
 
-  // Check if page contains "Not Found" or 404 header
   const title = $('title').text();
   if (title.includes('404') || $('h1').text().includes('404')) {
     throw new ScrapeError(`CSES User with ID ${userId} not found`, 404);
@@ -61,41 +64,43 @@ export function parseCsesHtml(html: string, userId: string): CsesProfile {
   const username = headerText.replace(/^User\s+/, '').trim() || `User ${userId}`;
 
   let submissions = 0;
-  let solved = 0;
-  let hasSolvedRow = false;
+  let firstSubmission = '';
+  let lastSubmission = '';
 
-  // Parse "User information" table
+  // Parse summary table (publicly visible fields only)
   $('.summary-table tr, table.summary-table tr').each((_, row) => {
     const label = $(row).find('td').eq(0).text().trim().toLowerCase();
     const value = $(row).find('td').eq(1).text().trim();
 
     if (label.includes('submission count')) {
       submissions = parseInt(value, 10) || 0;
-    } else if (label.includes('tasks solved') || label.includes('solved tasks') || label.includes('solved problems')) {
-      solved = parseInt(value, 10) || 0;
-      hasSolvedRow = true;
+    } else if (label.includes('first submission')) {
+      firstSubmission = value;
+    } else if (label.includes('last submission')) {
+      lastSubmission = value;
     }
   });
 
-  // If there's no explicit solved count row (which is standard for public CSES profile pages),
-  // we can use a heuristic or default to 0 (and let query parameters override it), or estimate it.
-  // We'll set solved to a default of 0 unless we find a solved count row.
-  // The API allows overriding via query parameters for full flexibility.
-  if (!hasSolvedRow) {
-    solved = 0; 
-  }
-
-  // Parse languages section for potential card stats
-  const sections: { name: string; solved: number; total: number }[] = [];
-  
-  // We assume a total of 400 problems (standard CSES problem set size)
-  const totalProblems = 400;
+  // Parse language breakdown table
+  const languages: CsesLanguage[] = [];
+  $('table.narrow tr').each((idx, row) => {
+    if (idx === 0) return; // skip header row
+    const cells = $(row).find('td');
+    if (cells.length >= 3) {
+      const langName = cells.eq(0).text().trim();
+      const langCount = parseInt(cells.eq(1).text().trim(), 10) || 0;
+      const langShare = cells.eq(2).text().trim();
+      if (langName) {
+        languages.push({ name: langName, count: langCount, share: langShare });
+      }
+    }
+  });
 
   return {
     username,
-    solved,
-    total: totalProblems,
     submissions,
-    sections,
+    firstSubmission,
+    lastSubmission,
+    languages,
   };
 }
