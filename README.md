@@ -85,4 +85,5 @@ Append these query parameters to `/api/badge` or `/api/card` to customize the ou
 ## 📝 MIT License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
-****
+
+---
