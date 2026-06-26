@@ -49,45 +49,5 @@ You can customize badges and cards by appending query parameters:
 
 ---
 
-## ⚡ Deployment to Vercel
-
-Deploying your own instance to Vercel takes less than a minute:
-
-1. **Deploy using Vercel CLI**:
-   ```bash
-   npm install -g vercel
-   vercel
-   ```
-2. **Configure caching**:
-   The API is built using Next.js route handlers. It returns premium headers:
-   `Cache-Control: public, max-age=1800, s-maxage=1800, stale-while-revalidate=60`
-   This caches profiles on Vercel's Edge CDN for 30 minutes, preventing rate-limiting on CSES while keeping statistics fresh.
-
----
-
-## 🛠 Local Development
-
-To run the application locally or contribute:
-
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-2. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
-3. **Run unit tests**:
-   ```bash
-   npm test
-   ```
-4. **Format & Lint**:
-   ```bash
-   npm run lint
-   npx prettier --write .
-   ```
-
----
-
 ## 📝 MIT License
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
