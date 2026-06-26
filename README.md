@@ -4,41 +4,66 @@ Showcase your **CSES (Computer Science Education Society)** competitive programm
 
 ---
 
-## 🚀 Quick Start (Add to your Profile)
+## 🚀 How to Use in your GitHub Profile
 
-Copy the Markdown code below, replace `YOUR_CSES_ID` (e.g., `3`) with your numeric CSES ID, and paste it into your GitHub profile README:
+You don't need to configure or code anything to use this. Simply follow these steps:
 
-### 1. CSES Stats Card (Recommended)
+### Step 1: Copy the Markdown Code
 
-Displays your total submissions count, first submission date, and your programming languages breakdown:
+Choose either a complete statistics card or a compact badge:
 
-```markdown
-[![CSES Stats Card](https://cses-readme-badge.vercel.app/api/card?user=YOUR_CSES_ID&theme=github&style=modern)](https://cses.fi/user/YOUR_CSES_ID)
-```
+#### Option A: CSES Profile Card (Recommended)
 
-### 2. CSES Submissions Badge
-
-Displays a clean, compact badge showing your total submissions count:
+Displays your total submissions, first submission date, and programming languages breakdown:
 
 ```markdown
-[![CSES Submissions Badge](https://cses-readme-badge.vercel.app/api/badge?user=YOUR_CSES_ID&theme=github&style=modern)](https://cses.fi/user/YOUR_CSES_ID)
+[![CSES Profile Card](https://cses-badge.vercel.app/api/card?user=YOUR_CSES_ID&theme=github&style=modern)](https://cses.fi/user/YOUR_CSES_ID)
 ```
+
+#### Option B: CSES Submissions Badge
+
+Displays a simple badge with your total submissions:
+
+```markdown
+[![CSES Submissions Badge](https://cses-badge.vercel.app/api/badge?user=YOUR_CSES_ID&theme=github&style=modern)](https://cses.fi/user/YOUR_CSES_ID)
+```
+
+### Step 2: Get Your CSES User ID
+
+1. Log in to [cses.fi](https://cses.fi).
+2. Click on your username in the top right to go to your profile.
+3. Look at the URL in your browser. It will look like `https://cses.fi/user/12345/`.
+4. Your **CSES User ID** is the number (e.g., `12345`).
+
+### Step 3: Paste and Customize
+
+Replace `YOUR_CSES_ID` in the markdown code with your actual CSES User ID, and paste it into your GitHub profile README file (`README.md`).
 
 ---
 
-## 🎨 Themes & Styles
+## 🎨 Theme & Style Previews
 
-Match your profile aesthetic with 10 curated themes and 3 different layout styles.
+Customize the card or badge appearance to match your GitHub profile README design.
 
-### Themes
+### Card Theme Previews
 
-`github` | `dark` | `light` | `ocean` | `sunset` | `emerald` | `rose` | `purple` | `nord` | `dracula`
+| Theme                | Preview                                                                                    |
+| :------------------- | :----------------------------------------------------------------------------------------- |
+| **Github** (Default) | ![Github Theme](https://cses-badge.vercel.app/api/card?user=3&theme=github&style=modern)   |
+| **Dracula**          | ![Dracula Theme](https://cses-badge.vercel.app/api/card?user=3&theme=dracula&style=modern) |
+| **Dark**             | ![Dark Theme](https://cses-badge.vercel.app/api/card?user=3&theme=dark&style=modern)       |
+| **Ocean**            | ![Ocean Theme](https://cses-badge.vercel.app/api/card?user=3&theme=ocean&style=modern)     |
+| **Sunset**           | ![Sunset Theme](https://cses-badge.vercel.app/api/card?user=3&theme=sunset&style=modern)   |
+| **Emerald**          | ![Emerald Theme](https://cses-badge.vercel.app/api/card?user=3&theme=emerald&style=modern) |
+| **Nord**             | ![Nord Theme](https://cses-badge.vercel.app/api/card?user=3&theme=nord&style=modern)       |
 
-### Styles
+### Compact Badge Styles
 
-- `rounded` (Default) — Smooth rounded corners
-- `modern` — Added gradients, subtle shadows, and a premium look
-- `flat` — Sharp corners, clean design
+| Style       | Preview                                                                                     |
+| :---------- | :------------------------------------------------------------------------------------------ |
+| **Modern**  | ![Modern Style](https://cses-badge.vercel.app/api/badge?user=3&theme=github&style=modern)   |
+| **Rounded** | ![Rounded Style](https://cses-badge.vercel.app/api/badge?user=3&theme=github&style=rounded) |
+| **Flat**    | ![Flat Style](https://cses-badge.vercel.app/api/badge?user=3&theme=github&style=flat)       |
 
 ---
 
@@ -46,30 +71,30 @@ Match your profile aesthetic with 10 curated themes and 3 different layout style
 
 Append these query parameters to `/api/badge` or `/api/card` to customize the output:
 
-| Parameter | Type      | Default       | Description                                         |
-| :-------- | :-------- | :------------ | :-------------------------------------------------- |
-| `user`    | `string`  | **Required**  | Your numeric CSES User ID (e.g., `3`).              |
-| `theme`   | `string`  | `github`      | Visual color palette theme.                         |
-| `style`   | `string`  | `rounded`     | Shape style (`rounded`, `modern`, `flat`).          |
-| `color`   | `string`  | Theme default | Custom accent color in hex format (e.g., `10b981`). |
-| `label`   | `string`  | `CSES`        | Badge prefix text (Badge only).                     |
-| `logo`    | `boolean` | `true`        | Include the stylized CSES grid icon (Badge only).   |
+| Parameter | Type      | Default       | Description                                                                                            |
+| :-------- | :-------- | :------------ | :----------------------------------------------------------------------------------------------------- |
+| `user`    | `string`  | **Required**  | Your numeric CSES User ID (e.g., `3`).                                                                 |
+| `theme`   | `string`  | `github`      | Palette: `github`, `dark`, `light`, `ocean`, `sunset`, `emerald`, `rose`, `purple`, `nord`, `dracula`. |
+| `style`   | `string`  | `rounded`     | Shape layout: `rounded`, `modern`, `flat`.                                                             |
+| `color`   | `string`  | Theme default | Custom accent color in hex format (e.g., `10b981`).                                                    |
+| `label`   | `string`  | `CSES`        | Badge prefix text (Badge only).                                                                        |
+| `logo`    | `boolean` | `true`        | Include the stylized CSES grid icon (Badge only).                                                      |
 
 ---
 
 ## ⚡ Deploy Your Own (Vercel)
 
-You can easily deploy your own instance to Vercel in seconds:
+If you prefer to host your own instance:
 
 1. Fork this repository.
 2. Go to [vercel.com/new](https://vercel.com/new) and import your fork.
 3. Click **Deploy**.
-4. Use your custom Vercel URL instead:
+4. Use your custom Vercel URL:
    `https://your-project.vercel.app/api/card?user=YOUR_CSES_ID`
 
 ---
 
-## 🛠 Local Development
+## 💻 Local Development
 
 ```bash
 # Install dependencies
