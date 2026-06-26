@@ -67,21 +67,6 @@ Customize the card or badge appearance to match your GitHub profile README desig
 
 ---
 
-## 🛠 Query Parameters Reference
-
-Append these query parameters to `/api/badge` or `/api/card` to customize the output:
-
-| Parameter | Type      | Default       | Description                                                                                            |
-| :-------- | :-------- | :------------ | :----------------------------------------------------------------------------------------------------- |
-| `user`    | `string`  | **Required**  | Your numeric CSES User ID (e.g., `3`).                                                                 |
-| `theme`   | `string`  | `github`      | Palette: `github`, `dark`, `light`, `ocean`, `sunset`, `emerald`, `rose`, `purple`, `nord`, `dracula`. |
-| `style`   | `string`  | `rounded`     | Shape layout: `rounded`, `modern`, `flat`.                                                             |
-| `color`   | `string`  | Theme default | Custom accent color in hex format (e.g., `10b981`).                                                    |
-| `label`   | `string`  | `CSES`        | Badge prefix text (Badge only).                                                                        |
-| `logo`    | `boolean` | `true`        | Include the stylized CSES grid icon (Badge only).                                                      |
-
----
-
 ## 📝 MIT License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
